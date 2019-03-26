@@ -1,0 +1,18 @@
+---
+- hosts: nodes
+  user: ubuntu
+  become: yes
+  vars_files:
+    - vars/variables.yml
+  tasks:
+  - name: Add a new user
+    user:
+      name: "{{user_name}}"
+      shell: /bin/bash
+
+
+  - name: Give SSH access
+    authorized_key:
+      user: "{{user_name}}"
+      state: present
+      key: "{{ lookup('file','/home/ubuntu/.ssh/id_rsa.pub') }}"
